@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: delete-nebula
+spec:
+  entrypoint: delete-nebula
+
+  templates:
+    - name: delete-nebula
+      inputs:
+        parameters:
+          - name: name
+      steps:
+        - - name: delete
+            template: delete
+            arguments:
+              parameters:
+                - name: name
+                  value: "{{inputs.parameters.name}}"
+
+    - name: delete
+      inputs:
+        parameters:
+          - name: name
+      resource:
+        action: delete
+        manifest: |
+          apiVersion: apps.nebula-graph.io/v1alpha1
+          kind: NebulaCluster
+          metadata:
+            name: {{inputs.parameters.name}}
+         

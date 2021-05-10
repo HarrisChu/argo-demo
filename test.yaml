@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: test-
+spec:
+  entrypoint: test
+
+  templates:
+    - name: test
+      script:
+        image: bitnami/kubectl:latest
+        command: [bash]
+        source: |
+          for i in `seq 1 10`;do
+            if (( `kubectl get nebulacluster nebula -nargo -ojsonpath='{.status.conditions[0].status}'` == True ));then
+              echo "nebulacluster is ready"
+              exit 0
+            fi
+            sleep 5
+          done
+          # timeout error
+          echo "create nebulacluster timeout"
+          exit 1

@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: deploy-nebula-workflow-
+spec:
+  entrypoint: deploy
+
+  templates:
+    - name: deploy
+      inputs:
+        parameters:
+          - name: name
+      steps:
+        - - name: deploy
+            templateRef:
+              name: deploy-nebula
+              template: deploy-nebula
+            arguments:
+              parameters:
+                - name: name
+                  value: "{{inputs.parameters.name}}"

@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: run-tck
+spec:
+  entrypoint: run-tck
+
+
+  templates:
+    - name: run-tck
+      inputs:
+        parameters:
+          - name: name
+      script:
+        image: vesoft/nebula-dev:centos7
+        command: [bash]
+        source: |
+          git clone -b enhance_tck https://github.com/HarrisChu/nebula-graph.git
+          cd nebula-graph/tests
+          make init
+          PYTHONPATH=$PYTHONPATH:/root/nebula-graph/tests/.. /root/nebula-graph/tests/nebula-test-run.py --cmd=start --rm_dir=true --build_dir=/root/nebula-graph/tests/../build --address={{ inputs.parameters.name }}-graphd-svc:9669
+          python3 -m pytest --cucumber-json=/root/nebula-graph/tests/tck-report.json --cucumber-json-expanded -n10 --rm_dir=true -m "not skip" /root/nebula-graph/tests/tck/  --address={{ inputs.parameters.name }}-graphd-svc:9669
+
+
+          
+
+    
