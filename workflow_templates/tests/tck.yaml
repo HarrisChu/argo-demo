@@ -29,3 +29,13 @@ spec:
               parameters:
                 - name: name
                   value: "{{inputs.parameters.name}}"
+
+        - - name: delete
+            templateRef:
+              name: run-tck
+              template: run-tck
+            arguments:
+              parameters:
+                - name: name
+                  value: "{{inputs.parameters.name}}"
+

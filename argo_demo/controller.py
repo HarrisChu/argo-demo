@@ -22,7 +22,7 @@ def hook():
     """ receive the hook from GitHub """
 
     # TODO just a demo here
-    data = {"resourceKind": "WorkflowTemplate", "resourceName": "deploy-nebula",
+    data = {"resourceKind": "WorkflowTemplate", "resourceName": "tck",
             "submitOptions": {'parameters': ['name={}'.format(generate_nebula_name()), 'nebula-version=v2-nightly']}}
     resp = requests.post('https://192.168.8.96:30080/api/v1/workflows/argo/submit', verify=False, json=data)
     return jsonify(success=True)
