@@ -30,4 +30,4 @@ def hook():
 
 def generate_nebula_name():
     now = datetime.now()
-    return 'nebula{}'.format(now.strftime('%M%%S%f'))
+    return 'nebula{}'.format(now.strftime('%M%S%f'))
